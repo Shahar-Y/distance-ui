@@ -1,0 +1,59 @@
+<form class="example-form" [formGroup]="personForm" (ngSubmit)="onSubmit()">
+  <mat-form-field class="example-full-width" appearance="fill">
+    <mat-label for="first-name">First Name: </mat-label>
+    <input matInput id="first-name" type="text" formControlName="firstName" />
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width" appearance="fill">
+    <mat-label for="last-name">Last Name: </mat-label>
+    <input matInput id="last-name" type="text" formControlName="lastName" />
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width" appearance="fill">
+    <mat-label for="serviceType">Service Type: </mat-label>
+    <select
+      id="serviceType"
+      formControlName="serviceType"
+      matNativeControl
+      required
+    >
+      <option *ngFor="let serviceType of serviceTypes" [value]="serviceType">
+        {{ serviceType }}
+      </option>
+    </select>
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width" appearance="fill">
+    <mat-label for="statusExpiration">Service Status Expiration: </mat-label>
+    <mat-hint> (The time when the person ends his Hova/Keva) </mat-hint>
+    <input
+      matInput
+      id="statusExpiration"
+      type="date"
+      formControlName="statusExpiration"
+    />
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width" appearance="fill">
+    <mat-label for="address"> Full Address: </mat-label>
+    <input matInput id="address" type="text" formControlName="address" />
+  </mat-form-field>
+
+  <p>Complete the form to enable button.</p>
+  <button
+    mat-raised-button
+    color="primary"
+    type="submit"
+    [disabled]="!personForm.valid"
+  >
+    Submit
+  </button>
+</form>
+<!-- <div [formGroup]="personForm">
+  <mat-form-field appearance="fill">
+    <mat-label>Phone number</mat-label>
+    <example-tel-input formControlName="lastName" required></example-tel-input>
+    <mat-icon matSuffix>phone</mat-icon>
+    <mat-hint>Include area code</mat-hint>
+  </mat-form-field>
+</div> -->
