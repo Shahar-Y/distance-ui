@@ -1,12 +1,16 @@
 <form class="example-form" [formGroup]="personForm" (ngSubmit)="onSubmit()">
   <mat-form-field class="example-full-width" appearance="fill">
-    <mat-label for="first-name">First Name: </mat-label>
-    <input matInput id="first-name" type="text" formControlName="firstName" />
+    <mat-label for="sex">Sex: </mat-label>
+    <select id="sex" formControlName="sex" matNativeControl required>
+      <option *ngFor="let sex of sexes" [value]="sex">
+        {{ sex }}
+      </option>
+    </select>
   </mat-form-field>
 
   <mat-form-field class="example-full-width" appearance="fill">
-    <mat-label for="last-name">Last Name: </mat-label>
-    <input matInput id="last-name" type="text" formControlName="lastName" />
+    <mat-label for="full-name">Full Name: </mat-label>
+    <input matInput id="full-name" type="text" formControlName="fullName" />
   </mat-form-field>
 
   <mat-form-field class="example-full-width" appearance="fill">
@@ -25,7 +29,7 @@
 
   <mat-form-field class="example-full-width" appearance="fill">
     <mat-label for="statusExpiration">Service Status Expiration: </mat-label>
-    <mat-hint> (The time when the person ends his Hova/Keva) </mat-hint>
+    <mat-hint> (הזמן לסיום החובה\קבע) </mat-hint>
     <input
       matInput
       id="statusExpiration"
@@ -44,16 +48,9 @@
     mat-raised-button
     color="primary"
     type="submit"
+    style="justify-content: center"
     [disabled]="!personForm.valid"
   >
     Submit
   </button>
 </form>
-<!-- <div [formGroup]="personForm">
-  <mat-form-field appearance="fill">
-    <mat-label>Phone number</mat-label>
-    <example-tel-input formControlName="lastName" required></example-tel-input>
-    <mat-icon matSuffix>phone</mat-icon>
-    <mat-hint>Include area code</mat-hint>
-  </mat-form-field>
-</div> -->

@@ -1,11 +1,12 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable, lastValueFrom } from 'rxjs';
 import { Injectable } from '@angular/core';
 import {
   AddPersonResponse,
   CalculatedRoute,
+  GetPersonsResult,
   Person,
-  PersonWithRouteCalculation,
+  PersonWithRouteCalculations,
 } from './distance.types';
 
 @Injectable({
@@ -61,8 +62,8 @@ export class DistanceService {
    * @param id - the id of the person to remove.
    * @returns an observable of the removed person.
    */
-  removePerson(id: string): Observable<PersonWithRouteCalculation> {
-    return this.httpClient.delete<PersonWithRouteCalculation>(
+  removePerson(id: string): Observable<PersonWithRouteCalculations> {
+    return this.httpClient.delete<PersonWithRouteCalculations>(
       this.serviceUrl + '/api/person/' + id
     );
   }
@@ -71,9 +72,40 @@ export class DistanceService {
    * Get all persons from the database.
    * @returns an observable of the persons.
    */
-  getPersons(): Observable<PersonWithRouteCalculation[]> {
-    return this.httpClient.get<PersonWithRouteCalculation[]>(
-      this.serviceUrl + '/api/person'
-    );
+  getPersons(): Observable<GetPersonsResult[]> {
+    const persons: Observable<GetPersonsResult[]> = this.httpClient.get<
+      GetPersonsResult[]
+    >(this.serviceUrl + '/api/person');
+    return persons;
+  }
+
+  /**
+   * Fix persons types from GetPersonsResult to PersonWithRouteCalculations
+   * @param dbPersons - the persons from the dbto fix.
+   * @returns - the fixed persons.
+   */
+  handlePersons(dbPersons: GetPersonsResult[]): PersonWithRouteCalculations[] {
+    const result: PersonWithRouteCalculations[] = [];
+
+    dbPersons.forEach((person: GetPersonsResult) => {
+      const calculatedroute: { calculation: CalculatedRoute[] } = JSON.parse(
+        person.routeCalculations
+      );
+
+      const currPerson: PersonWithRouteCalculations = {
+        sex: person.sex,
+        fullName: person.fullName,
+        serviceType: person.serviceType,
+        address: person.address,
+        statusExpiration: person.statusExpiration,
+
+        _id: person._id,
+        points: 0,
+        routeCalculations: calculatedroute.calculation,
+      };
+      result.push(currPerson);
+    });
+
+    return result;
   }
 }

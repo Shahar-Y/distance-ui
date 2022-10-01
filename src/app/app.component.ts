@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Subject } from 'rxjs';
 import {
   AddPersonResponse,
-  PersonWithRouteCalculation,
+  PersonWithRouteCalculations,
 } from './core/distance.types';
 
 @Component({
@@ -13,17 +13,18 @@ import {
 export class AppComponent {
   title = 'distance-ui';
 
-  eventsSubject: Subject<PersonWithRouteCalculation> =
-    new Subject<PersonWithRouteCalculation>();
+  eventsSubject: Subject<PersonWithRouteCalculations> =
+    new Subject<PersonWithRouteCalculations>();
 
+  /**
+   * Triggered from person-editor when a new person is added to the database.
+   * Passes the new person to the simple-table component.
+   * @param addPersonResponseString - The new person as a string.
+   */
   addPerson(addPersonResponseString: string) {
-    const addPersonResponse: AddPersonResponse = JSON.parse(
+    const addPersonResponse: PersonWithRouteCalculations = JSON.parse(
       addPersonResponseString
     );
-
-    if (addPersonResponse.success === false) {
-    } else {
-      this.eventsSubject.next(addPersonResponse.newPerson);
-    }
+    this.eventsSubject.next(addPersonResponse);
   }
 }

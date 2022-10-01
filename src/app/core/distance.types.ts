@@ -17,20 +17,28 @@ export type CalculatedRoute = {
 };
 
 export type Person = {
-  firstName: string;
-  lastName: string;
+  sex: string;
+  fullName: string;
   serviceType: string;
   address: string;
   statusExpiration: string;
 };
 
-export type PersonWithRouteCalculation = Person & {
+export type GetPersonsResult = Person & {
   _id: string;
-  routeCalculation: string;
+  // CalculatedRoute[] as a string
+  routeCalculations: string;
+  points: number;
+};
+
+export type PersonWithRouteCalculations = Person & {
+  _id: string;
+  routeCalculations: CalculatedRoute[];
+  points: number;
 };
 
 export type AddPersonResponse = {
   error: Error | null;
   success: boolean;
-  newPerson: PersonWithRouteCalculation;
+  newPerson: GetPersonsResult;
 };

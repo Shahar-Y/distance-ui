@@ -1,6 +1,16 @@
-<p>hello world!</p>
-<app-simple-table [events]="eventsSubject.asObservable()"></app-simple-table>
-<br />
-<br />
-<h1>Add a new person</h1>
-<app-person-editor (newPersonEvent)="addPerson($event)"></app-person-editor>
+<div>
+  <div style="margin: 2%; padding-bottom: 2%">
+    <h1 class="header-container">מערכת זכאות למגורים</h1>
+
+    <app-simple-table
+      [events]="eventsSubject.asObservable()"
+    ></app-simple-table>
+    <br />
+    <br />
+    <h1 class="header-container-small">הוסף אדם חדש</h1>
+    <app-person-editor
+      style="display: flex; justify-content: center"
+      (newPersonEvent)="addPerson($event)"
+    ></app-person-editor>
+  </div>
+</div>

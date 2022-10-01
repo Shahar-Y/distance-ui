@@ -1,8 +1,32 @@
-<h1>Simple Angular mat-table example</h1>
+<div class="example-form">
+  <input
+    type="filter"
+    class="example-form"
+    id="search-text"
+    aria-describedby="search-text"
+    [(ngModel)]="freeFilter"
+    placeholder="חיפוש חופשי"
+    autofocus
+  />
+</div>
 
-<h2>Simple Angular mat-table</h2>
+<mat-form-field appearance="fill">
+  <mat-label>Sex</mat-label>
+  <select matNativeControl required [(ngModel)]="searchText">
+    <option value="">ALL</option>
+    <option value="MALE">MALE</option>
+    <option value="FEMALE">FEMALE</option>
+  </select>
+</mat-form-field>
 
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+  <ng-container matColumnDef="position">
+    <th class="mat-header" mat-header-cell *matHeaderCellDef>Position</th>
+    <td calss="" mat-cell *matCellDef="let element; let i = index">
+      {{ i + 1 }}
+    </td>
+  </ng-container>
+
   <ng-container
     [matColumnDef]="column"
     *ngFor="let column of autoDisplayedColumns"
@@ -10,6 +34,7 @@
     <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
     <td mat-cell *matCellDef="let row">{{ row[column] }}</td>
   </ng-container>
+
   <ng-container matColumnDef="delete">
     <th mat-header-cell *matHeaderCellDef>Delete</th>
     <td mat-cell *matCellDef="let element">
@@ -19,6 +44,21 @@
     </td>
   </ng-container>
 
-  <tr mat-header-row *matHeaderRowDef="allColumns"></tr>
-  <tr mat-row *matRowDef="let emprow; columns: allColumns"></tr>
+  <tr
+    mat-header-row
+    *matHeaderRowDef="allColumns"
+    [ngClass]="{ 'grey-row': true }"
+  ></tr>
+  <tr
+    mat-row
+    *matRowDef="let row; columns: allColumns"
+    [matTooltip]="getRowTooltip(row)"
+    [ngClass]="{
+      'orange-row': expirationStatus(row) === 'SHORT',
+      'green-row': expirationStatus(row) === 'LONG',
+      'red-row': expirationStatus(row) === 'EXPIRED',
+      'blue-row':
+        getPersonDistance(row) > 100 && expirationStatus(row) !== 'EXPIRED'
+    }"
+  ></tr>
 </table>
